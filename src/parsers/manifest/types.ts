@@ -351,5 +351,13 @@ export interface IParsedManifest {
   suggestedPresentationDelay? : number | undefined;
   /** URIs where the manifest can be refreshed by order of importance. */
   uris? : string[] | undefined;
+
+  contentSteering : IContentSteeringMetadata | null;
 }
 
+export interface IContentSteeringMetadata {
+  url : string;
+  defaultLabel : string | undefined;
+  queryBeforeStart : boolean;
+  proxyUrl : string | undefined;
+}

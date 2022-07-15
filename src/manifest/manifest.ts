@@ -15,7 +15,10 @@
  */
 
 import { MediaError } from "../errors";
-import { IParsedManifest } from "../parsers/manifest";
+import {
+  IContentSteeringMetadata,
+  IParsedManifest,
+} from "../parsers/manifest";
 import {
   IPlayerError,
   IRepresentationFilter,
@@ -241,6 +244,8 @@ export default class Manifest extends EventEmitter<IManifestEvents> {
    */
   public clockOffset : number | undefined;
 
+  public contentSteering : IContentSteeringMetadata | null;
+
   /**
    * Data allowing to calculate the minimum and maximum seekable positions at
    * any given time.
@@ -380,6 +385,7 @@ export default class Manifest extends EventEmitter<IManifestEvents> {
     this.suggestedPresentationDelay = parsedManifest.suggestedPresentationDelay;
     this.availabilityStartTime = parsedManifest.availabilityStartTime;
     this.publishTime = parsedManifest.publishTime;
+    this.contentSteering = parsedManifest.contentSteering;
     if (supplementaryImageTracks.length > 0) {
       this._addSupplementaryImageAdaptations(supplementaryImageTracks);
     }
@@ -716,6 +722,7 @@ export default class Manifest extends EventEmitter<IManifestEvents> {
     this.suggestedPresentationDelay = newManifest.suggestedPresentationDelay;
     this.transport = newManifest.transport;
     this.publishTime = newManifest.publishTime;
+    this.contentSteering = newManifest.contentSteering;
 
     if (updateType === MANIFEST_UPDATE_TYPE.Full) {
       this._timeBounds = newManifest._timeBounds;
