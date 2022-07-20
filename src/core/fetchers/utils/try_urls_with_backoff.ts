@@ -27,6 +27,7 @@ import getFuzzedDelay from "../../../utils/get_fuzzed_delay";
 import TaskCanceller, {
   CancellationSignal,
 } from "../../../utils/task_canceller";
+import CdnPrioritizer from "../../init/cdn_prioritizer";
 
 /**
  * Called on a loader error.
@@ -155,6 +156,7 @@ function getRequestErrorType(error : unknown) : REQUEST_ERROR_TYPES {
  * next.
  *
  * @param {Array.<string>} urls
+ * @param {Object|null} cdnPrioritizer
  * @param {Function} performRequest
  * @param {Object} options - Configuration options.
  * @param {Object} cancellationSignal
@@ -162,6 +164,8 @@ function getRequestErrorType(error : unknown) : REQUEST_ERROR_TYPES {
  */
 export function tryURLsWithBackoff<T>(
   urls : Array<string|null>,
+  // XXX TODO
+  cdnPrioritizer : CdnPrioritizer | null,
   performRequest : (
     url : string | null,
     cancellationSignal : CancellationSignal
@@ -273,15 +277,21 @@ export function tryURLsWithBackoff<T>(
 /**
  * Lightweight version of the request algorithm, this time with only a simple
  * Promise given.
- * @param {Function} request$
+ * @param {Function} performRequest
+ * @param {Object|null} cdnPrioritizer
  * @param {Object} options
  * @returns {Observable}
  */
 export function tryRequestPromiseWithBackoff<T>(
   performRequest : () => Promise<T>,
+  cdnPrioritizer : CdnPrioritizer | null,
   options : IBackoffSettings,
   cancellationSignal : CancellationSignal
 ) : Promise<T> {
   // same than for a single unknown URL
-  return tryURLsWithBackoff([null], performRequest, options, cancellationSignal);
+  return tryURLsWithBackoff([null],
+                            cdnPrioritizer,
+                            performRequest,
+                            options,
+                            cancellationSignal);
 }

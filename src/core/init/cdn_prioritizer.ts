@@ -48,8 +48,6 @@ const DEFAULT_CDN_DOWNGRADE_TIME = 60;
  * @class CdnPrioritizer
  */
 export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> {
-  private _readyState : ISharedReference<"not-ready" | "ready" | "disposed">;
-
   /**
    * Metadata parsed from the last Content Steering Manifest loaded.
    *
@@ -83,6 +81,8 @@ export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> 
    * Set to `null` when no such process is pending.
    */
   private _steeringManifestUpdateCanceller : TaskCanceller | null;
+
+  private _readyState : ISharedReference<"not-ready" | "ready" | "disposed">;
 
   /**
    * @param {Object} steeringManifestFetcher
@@ -152,7 +152,7 @@ export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> 
    *
    * Note: It is VERY important to include all CDN that are able to reach the
    * wanted resource, even those which will in the end not be used anyway.
-   * If some CDN are not communicated, the `CDNPrioritizer` might wrongly
+   * If some CDN are not communicated, the `CdnPrioritizer` might wrongly
    * consider that the current resource don't have any of the CDN prioritized
    * internally and return other CDN which should have been forbidden if it knew
    * about the other, non-used, ones.
@@ -160,9 +160,10 @@ export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> 
    * @param {Array.<string>} everyCdnForResource - Array of ALL available CDN
    * able to reach the wanted resource - even those which might not be used in
    * the end.
+   * XXX TODO
    * @returns {Array.<string>} - Array of CDN that can be tried to reach the
    * resource, sorted by order of CDN preference, according to the
-   * `CDNPrioritizer`'s own list of priorities.
+   * `CdnPrioritizer`'s own list of priorities.
    */
   public getCdnPreferenceForResource(
     everyCdnForResource : string[]
@@ -194,7 +195,7 @@ export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> 
    *
    * Note: It is VERY important to include all CDN that are able to reach the
    * wanted resource, even those which will in the end not be used anyway.
-   * If some CDN are not communicated, the `CDNPrioritizer` might wrongly
+   * If some CDN are not communicated, the `CdnPrioritizer` might wrongly
    * consider that the current resource don't have any of the CDN prioritized
    * internally and return other CDN which should have been forbidden if it knew
    * about the other, non-used, ones.
@@ -204,7 +205,7 @@ export default class CdnPrioritizer extends EventEmitter<ICdnPrioritizerEvents> 
    * the end.
    * @returns {Array.<string>} - Array of CDN that can be tried to reach the
    * resource, sorted by order of CDN preference, according to the
-   * `CDNPrioritizer`'s own list of priorities.
+   * `CdnPrioritizer`'s own list of priorities.
    */
   private _innerGetCdnPreferenceForResource(
     everyCdnForResource : string[]

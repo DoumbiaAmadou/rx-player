@@ -32,8 +32,8 @@
    |         |                      |
    |  Init   |                      | ./src/core/init/cdn_prioritizer.ts
    |         |              +----------------+ Signals the priority between multiple
-   |         | -----------> | CDNPrioritizer | potential CDNs for each resource.
-   |         |  Creates     +----------------+ (This is done on demand, the `CDNPrioritizer`
+   |         | -----------> | CdnPrioritizer | potential CDNs for each resource.
+   |         |  Creates     +----------------+ (This is done on demand, the `CdnPrioritizer`
    |         |                     ^           knows of no resource in advance).
    |         |                     |
    |         |                     | Asks to sort a segment's available base urls by order of

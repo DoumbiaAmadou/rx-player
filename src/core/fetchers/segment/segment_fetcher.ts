@@ -47,6 +47,7 @@ import {
   IRequestEndCallbackPayload,
   IRequestProgressCallbackPayload,
 } from "../../adaptive";
+import CdnPrioritizer from "../../init/cdn_prioritizer";
 import { IBufferType } from "../../segment_buffers";
 import errorSelector from "../utils/error_selector";
 import { tryURLsWithBackoff } from "../utils/try_urls_with_backoff";
@@ -61,7 +62,7 @@ const generateRequestID = idGenerator();
  * `options` argument, which may retry a segment request when it fails.
  *
  * @param {string} bufferType
- * @param {Object} transport
+ * @param {Object} pipeline
  * @param {Object} callbacks
  * @param {Object} options
  * @returns {Function}
@@ -69,6 +70,7 @@ const generateRequestID = idGenerator();
 export default function createSegmentFetcher<TLoadedFormat, TSegmentDataType>(
   bufferType : IBufferType,
   pipeline : ISegmentPipeline<TLoadedFormat, TSegmentDataType>,
+  cdnPrioritizer : CdnPrioritizer,
   callbacks : ISegmentFetcherCreatorCallbacks,
   options : ISegmentFetcherOptions
 ) : ISegmentFetcher<TSegmentDataType> {
